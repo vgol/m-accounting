@@ -27,6 +27,15 @@
     }
   },
 
+  "mounts": [
+    "source=${localWorkspaceFolder}/.persist,target=/data,type=bind,consistency=cached",
+    "source=${localWorkspaceFolder}/persistent_data,target=/persistent_data,type=bind,consistency=cached"
+  ],
+
+  "containerEnv": {
+    "MYPY_CACHE_DIR": "/data/mypy_cache"
+  },
+
   "containerUser": "marusya",
   "remoteUser": "marusya",
   "customizations": {
@@ -37,7 +46,8 @@
         "ms-toolsai.jupyter",
         "charliermarsh.ruff",
         "ms-azuretools.vscode-docker",
-        "the0807.uv-toolkit"
+        "the0807.uv-toolkit",
+        "matangover.mypy"
       ],
       "settings": {
         "python.defaultInterpreterPath": "/workspaces/${localWorkspaceFolderBasename}/.venv/bin/python",
@@ -45,6 +55,15 @@
         "python.analysis.typeCheckingMode": "strict",
         "ruff.enable": true,
         "ruff.nativeServer": true,
+        "mypy.enabled": true,
+        "mypy.dmypyEnabled": true,
+        "mypy.runUsingActiveInterpreter": true,
+        "mypy.targets": [
+          "/workspaces/m-accounting/app"
+        ],
+        "mypy.args": [
+          "--python-version=3.13"
+        ],
         "[python]": {
           "editor.formatOnSave": true,
           "editor.defaultFormatter": "charliermarsh.ruff",
