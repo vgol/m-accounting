@@ -58,10 +58,10 @@
         "mypy.dmypyEnabled": true,
         "mypy.runUsingActiveInterpreter": true,
         "mypy.targets": [
-          "/workspaces/m-accounting/app"
+          "/workspaces/m-accounting/"
         ],
         "mypy.args": [
-          "--python-version=3.13"
+          "--python-version=3.14"
         ],
         "[python]": {
           "editor.formatOnSave": true,
