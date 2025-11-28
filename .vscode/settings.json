@@ -1,3 +1,5 @@
 {
-    "json.schemaDownload.enable": true
+    "json.schemaDownload.enable": true,
+    "python.analysis.stubPath": "stubs",
+    "python.analysis.extraPaths": ["stubs"]
 }

@@ -12,6 +12,15 @@
           "title": "Owner",
           "type": "string"
         },
+        "users": {
+          "description": "List of users with access",
+          "items": {
+            "description": "The name of the user",
+            "type": "string"
+          },
+          "title": "Users",
+          "type": "array"
+        },
         "shared": {
           "title": "Shared",
           "type": "boolean"
@@ -40,6 +49,12 @@
           ],
           "description": "The current balance of the account",
           "title": "Balance"
+        },
+        "timestamp": {
+          "description": "Creation or last update timestamp",
+          "format": "date-time",
+          "title": "Timestamp",
+          "type": "string"
         }
       },
       "required": [
@@ -54,6 +69,60 @@
       "title": "Account",
       "type": "object"
     },
+    "Cash": {
+      "properties": {
+        "alias": {
+          "description": "The alias for the account",
+          "title": "Alias",
+          "type": "string"
+        },
+        "owner": {
+          "description": "Reference to the user who owns the account",
+          "title": "Owner",
+          "type": "string"
+        },
+        "users": {
+          "description": "List of users with access",
+          "items": {
+            "description": "The name of the user",
+            "type": "string"
+          },
+          "title": "Users",
+          "type": "array"
+        },
+        "shared": {
+          "title": "Shared",
+          "type": "boolean"
+        },
+        "balance": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+              "type": "string"
+            }
+          ],
+          "description": "The current balance of the account",
+          "title": "Balance"
+        },
+        "timestamp": {
+          "description": "Creation or last update timestamp",
+          "format": "date-time",
+          "title": "Timestamp",
+          "type": "string"
+        }
+      },
+      "required": [
+        "alias",
+        "owner",
+        "shared",
+        "balance"
+      ],
+      "title": "Cash",
+      "type": "object"
+    },
     "PaySystem": {
       "enum": [
         "Giro",
@@ -66,7 +135,14 @@
     }
   },
   "additionalProperties": {
-    "$ref": "#/$defs/Account"
+    "anyOf": [
+      {
+        "$ref": "#/$defs/Account"
+      },
+      {
+        "$ref": "#/$defs/Cash"
+      }
+    ]
   },
   "propertyNames": {
     "description": "The alias for the account"

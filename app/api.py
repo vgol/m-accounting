@@ -25,7 +25,9 @@ router = APIRouter(prefix="/api", tags=["api"])
 
 
 @router.get("/transactions", response_model=list[Transaction])
-def list_transactions(store: Annotated[JsonStore, Depends(get_store)]) -> list[Transaction]:
+def list_transactions(
+    store: Annotated[JsonStore, Depends(get_store)],
+) -> list[Transaction]:
     return store.list_transactions()
 
 

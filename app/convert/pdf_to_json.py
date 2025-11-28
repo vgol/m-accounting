@@ -11,9 +11,7 @@ def convert_pdf_to_json(input_pdf_path: str | Path, output_json_path: str | Path
     converter = DocumentConverter()
     result = converter.convert_single(str(input_path))
     document_dict = result.document.export_to_dict()
-    output_path.write_text(
-        json.dumps(document_dict, ensure_ascii=False, indent=2), encoding="utf-8"
-    )
+    output_path.write_text(json.dumps(document_dict, ensure_ascii=False, indent=2), encoding="utf-8")
     return output_path
 
 

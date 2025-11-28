@@ -1,10 +1,12 @@
 import asyncio
 import contextlib
 import os
+
 from fastapi import FastAPI
 from starlette.middleware.wsgi import WSGIMiddleware
 
 from .api import router as api_router
+from .convert.pdf_to_json import convert_directory
 from .dash_app import build_dash_app
 
 
@@ -24,10 +26,8 @@ def create_app() -> FastAPI:
     async def _convert_on_startup() -> None:  # pragma: no cover
         async def _run() -> None:
             with contextlib.suppress(Exception):
-                # Lazy import and offload to thread to avoid blocking event loop
+                # Offload to thread to avoid blocking event loop
                 def _work() -> None:
-                    from .convert.pdf_to_json import convert_directory
-
                     convert_directory(input_dir, output_dir)
 
                 await asyncio.to_thread(_work)
