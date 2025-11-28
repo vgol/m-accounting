@@ -32,8 +32,11 @@
   ],
 
   "containerEnv": {
-    "MYPY_CACHE_DIR": "/data/mypy_cache"
+    "MYPY_CACHE_DIR": "/data/mypy_cache",
+    "UV_LINK_MODE": "copy"
   },
+
+  "postCreateCommand": "uv sync --upgrade && uv run pre-commit install",
 
   "containerUser": "marusya",
   "remoteUser": "marusya",
