@@ -55,12 +55,18 @@
         "mhutchie.git-graph",
         "codezombiech.gitignore",
         "waderyan.gitblame",
-        "eamodio.gitlens"
+        "eamodio.gitlens",
+        "redhat.vscode-yaml",
+        "redhat.vscode-xml",
+        "redhat.vscode-json",
+        "GitHub.copilot"
       ],
       "settings": {
         "python.defaultInterpreterPath": "/workspaces/${localWorkspaceFolderBasename}/.venv/bin/python",
         "python.terminal.activateEnvironment": true,
         "python.analysis.typeCheckingMode": "strict",
+        "python.analysis.diagnosticMode": "workspace",
+        "python.analysis.diagnosticsSource": "Pylance",
         "ruff.enable": true,
         "ruff.nativeServer": true,
         "mypy.enabled": true,
