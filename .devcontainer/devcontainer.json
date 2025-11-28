@@ -50,7 +50,12 @@
         "rioj7.vscode-json-validate",
         "remcohaszing.schemastore",
         "eriklynd.json-tools",
-        "tamasfe.even-better-toml"
+        "tamasfe.even-better-toml",
+        "donjayamanne.githistory",
+        "mhutchie.git-graph",
+        "codezombiech.gitignore",
+        "waderyan.gitblame",
+        "eamodio.gitlens"
       ],
       "settings": {
         "python.defaultInterpreterPath": "/workspaces/${localWorkspaceFolderBasename}/.venv/bin/python",
