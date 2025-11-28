@@ -3,13 +3,14 @@ from datetime import date, datetime
 from decimal import Decimal
 from enum import Enum
 from pathlib import Path
-from typing import Annotated, Any
+from typing import Annotated
 
 import dash
 import dash_mantine_components as dmc  # pyright: ignore[reportMissingTypeStubs]
 import pandas as pd
 import plotly.express as px
 from dash import dcc
+from dash.development.base_component import Component
 from pydantic import AfterValidator, BaseModel, Field, TypeAdapter
 from schwifty import IBAN
 
@@ -97,11 +98,11 @@ accounts_adapter = TypeAdapter(Accounts)
 class DashboardData(BaseModel):
     """Container for dashboard display data."""
 
-    assets_data: list[dict[str, Any]] = Field(default_factory=list)
-    liabilities_data: list[dict[str, Any]] = Field(default_factory=list)
-    total_assets: float = 0.0
-    total_liabilities: float = 0.0
-    net_worth: float = 0.0
+    assets_data: list = Field(default_factory=list)
+    liabilities_data: list = Field(default_factory=list)
+    total_assets: Decimal = Decimal("0")
+    total_liabilities: Decimal = Decimal("0")
+    net_worth: Decimal = Decimal("0")
     projection_df: pd.DataFrame = Field(default_factory=lambda: pd.DataFrame())
 
     model_config = {"arbitrary_types_allowed": True}
@@ -175,8 +176,8 @@ accounts_df = pd.DataFrame(accounts_data)
 assets_df = pd.DataFrame(columns=["Category", "Item", "Value"])
 liabilities_df = pd.DataFrame(columns=["Category", "Item", "Value"])
 
-total_assets = assets_df["Value"].sum() if len(assets_df) > 0 else 0.0
-total_liabilities = abs(liabilities_df["Value"].sum()) if len(liabilities_df) > 0 else 0.0
+total_assets = Decimal(str(assets_df["Value"].sum())) if len(assets_df) > 0 else Decimal("0")
+total_liabilities = abs(Decimal(str(liabilities_df["Value"].sum()))) if len(liabilities_df) > 0 else Decimal("0")
 net_worth = total_assets - total_liabilities
 
 # Create a simple projection from now to end of February
@@ -184,17 +185,13 @@ projection_dates = pd.date_range(start=date.today(), end=date(2026, 2, 28), freq
 projection_df = pd.DataFrame(
     {
         "Date": projection_dates,
-        "Balance": net_worth,
+        "Balance": float(net_worth),  # Convert to float for plotting
     }
 )
 
 # Assets table data
-assets_table_data: list[dict[str, Any]] = (
-    list(assets_df.to_dict("records")) if len(assets_df) > 0 else []  # type: ignore[arg-type]
-)
-liabilities_table_data: list[dict[str, Any]] = (
-    list(liabilities_df.to_dict("records")) if len(liabilities_df) > 0 else []  # type: ignore[arg-type]
-)
+assets_table_data = list(assets_df.to_dict("records")) if len(assets_df) > 0 else []
+liabilities_table_data = list(liabilities_df.to_dict("records")) if len(liabilities_df) > 0 else []
 
 
 # ==============================================================================
@@ -202,7 +199,7 @@ liabilities_table_data: list[dict[str, Any]] = (
 # ==============================================================================
 
 
-def create_header() -> Any:
+def create_header() -> Component:
     """Create the dashboard header component."""
     return dmc.Paper(
         p="xl",
@@ -224,7 +221,7 @@ def create_header() -> Any:
 # ==============================================================================
 
 
-def create_assets_table(table_data: list[dict[str, Any]], total: float) -> Any:
+def create_assets_table(table_data: list, total: Decimal) -> Component:
     """Create the assets table component."""
     return dmc.Paper(
         p="md",
@@ -260,7 +257,7 @@ def create_assets_table(table_data: list[dict[str, Any]], total: float) -> Any:
                                     dmc.TableTd(row["Category"]),
                                     dmc.TableTd(row["Item"]),
                                     dmc.TableTd(
-                                        f"€{row['Value']:,.2f}",
+                                        f"€{float(row['Value']):,.2f}",
                                         style={"textAlign": "right"},
                                     ),
                                 ]
@@ -286,7 +283,7 @@ def create_assets_table(table_data: list[dict[str, Any]], total: float) -> Any:
                 ],
             ),
             dmc.Text(
-                f"Total Assets: €{total:,.2f}",
+                f"Total Assets: €{float(total):,.2f}",
                 ta="right",
                 c="green",
                 fw=700,
@@ -297,7 +294,7 @@ def create_assets_table(table_data: list[dict[str, Any]], total: float) -> Any:
     )
 
 
-def create_liabilities_table(table_data: list[dict[str, Any]], total: float) -> Any:
+def create_liabilities_table(table_data: list, total: Decimal) -> Component:
     """Create the liabilities table component."""
     return dmc.Paper(
         p="md",
@@ -333,7 +330,7 @@ def create_liabilities_table(table_data: list[dict[str, Any]], total: float) -> 
                                     dmc.TableTd(row["Category"]),
                                     dmc.TableTd(row["Item"]),
                                     dmc.TableTd(
-                                        f"€{row['Value']:,.2f}",
+                                        f"€{float(row['Value']):,.2f}",
                                         style={"textAlign": "right"},
                                     ),
                                 ]
@@ -359,7 +356,7 @@ def create_liabilities_table(table_data: list[dict[str, Any]], total: float) -> 
                 ],
             ),
             dmc.Text(
-                f"Total Liabilities: €{total:,.2f}",
+                f"Total Liabilities: €{float(total):,.2f}",
                 ta="right",
                 c="red",
                 fw=700,
@@ -370,7 +367,7 @@ def create_liabilities_table(table_data: list[dict[str, Any]], total: float) -> 
     )
 
 
-def create_net_worth_summary(net_worth_value: float) -> Any:
+def create_net_worth_summary(net_worth_value: Decimal) -> Component:
     """Create the net worth summary component."""
     is_positive = net_worth_value >= 0
     color = "green" if is_positive else "red"
@@ -381,7 +378,7 @@ def create_net_worth_summary(net_worth_value: float) -> Any:
         style={"borderColor": color},
         children=[
             dmc.Title(
-                f"Net Worth: €{net_worth_value:,.2f}",
+                f"Net Worth: €{float(net_worth_value):,.2f}",
                 order=1,
                 ta="center",
                 c=color,
@@ -390,7 +387,7 @@ def create_net_worth_summary(net_worth_value: float) -> Any:
     )
 
 
-def create_balance_sheet_tab(data: DashboardData) -> Any:
+def create_balance_sheet_tab(data: DashboardData) -> Component:
     """Create the balance sheet tab panel content."""
     return dmc.TabsPanel(
         value="balance-sheet",
@@ -422,7 +419,7 @@ def create_balance_sheet_tab(data: DashboardData) -> Any:
 # ==============================================================================
 
 
-def create_projection_tab(projection_data: pd.DataFrame) -> Any:
+def create_projection_tab(projection_data: pd.DataFrame) -> Component:
     """Create the projection tab panel content."""
     return dmc.TabsPanel(
         value="projection",
@@ -460,7 +457,7 @@ def create_projection_tab(projection_data: pd.DataFrame) -> Any:
 # ==============================================================================
 
 
-def create_tabs(data: DashboardData) -> Any:
+def create_tabs(data: DashboardData) -> Component:
     """Create the main tabs container with all tab panels."""
     return dmc.Tabs(
         value="balance-sheet",
@@ -488,7 +485,7 @@ def create_tabs(data: DashboardData) -> Any:
 # ==============================================================================
 
 
-def create_layout(data: DashboardData) -> Any:
+def create_layout(data: DashboardData) -> Component:
     """Create the main application layout."""
     return dmc.MantineProvider(
         forceColorScheme="dark",
