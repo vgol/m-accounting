@@ -46,7 +46,11 @@
         "charliermarsh.ruff",
         "ms-azuretools.vscode-docker",
         "the0807.uv-toolkit",
-        "matangover.mypy"
+        "matangover.mypy",
+        "rioj7.vscode-json-validate",
+        "remcohaszing.schemastore",
+        "eriklynd.json-tools",
+        "tamasfe.even-better-toml"
       ],
       "settings": {
         "python.defaultInterpreterPath": "/workspaces/${localWorkspaceFolderBasename}/.venv/bin/python",
