@@ -31,6 +31,16 @@
     "source=${localWorkspaceFolder}/persistent_data,target=/persistent_data,type=bind,consistency=cached"
   ],
 
+  "forwardPorts": [8050],
+
+  "portsAttributes": {
+    "8050": {
+      "label": "we-move",
+      "onAutoForward": "openBrowser",
+      "visibility": "public"
+    }
+  },
+
   "containerEnv": {
     "MYPY_CACHE_DIR": "/data/mypy_cache",
     "UV_LINK_MODE": "copy"
