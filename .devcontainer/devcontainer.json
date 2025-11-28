@@ -20,15 +20,14 @@
       "userGid": "automatic"
     },
     "ghcr.io/devcontainers/features/python:1": {
-      "version": "3.13",
+      "version": "3.14",
       "installPath": "/usr/local/python/current/bin",
       "installTools": true,
-      "toolsToInstall": "uv"
+      "toolsToInstall": "uv,uvx"
     }
   },
 
   "mounts": [
-    "source=${localWorkspaceFolder}/.persist,target=/data,type=bind,consistency=cached",
     "source=${localWorkspaceFolder}/persistent_data,target=/persistent_data,type=bind,consistency=cached"
   ],
 
