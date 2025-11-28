@@ -83,13 +83,9 @@ exclude = '^(\.venv/|build/|dist/)'
 module = [
     "dash_mantine_components",
     "dash_mantine_components.*",
+    "notebooks.*",
 ]
 ignore_missing_imports = true
-ignore_errors = true
-
-# Notebooks use dash_mantine_components which lacks type stubs
-[[tool.mypy.overrides]]
-module = "notebooks.*"
 ignore_errors = true
 
 # TODO: Fix type errors in app/ and remove this override

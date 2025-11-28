@@ -39,6 +39,14 @@ IBANType = Annotated[
 UserName = Annotated[str, Field(description="The name of the user")]
 
 
+class TableRowData(BaseModel):
+    """Model for asset/liability table row data."""
+
+    Category: str
+    Item: str
+    Value: Decimal
+
+
 # ==============================================================================
 # DATA MODELS
 # ==============================================================================
@@ -98,8 +106,8 @@ accounts_adapter = TypeAdapter(Accounts)
 class DashboardData(BaseModel):
     """Container for dashboard display data."""
 
-    assets_data: list = Field(default_factory=list)
-    liabilities_data: list = Field(default_factory=list)
+    assets_data: list[TableRowData] = Field(default_factory=list)
+    liabilities_data: list[TableRowData] = Field(default_factory=list)
     total_assets: Decimal = Decimal("0")
     total_liabilities: Decimal = Decimal("0")
     net_worth: Decimal = Decimal("0")
@@ -190,8 +198,22 @@ projection_df = pd.DataFrame(
 )
 
 # Assets table data
-assets_table_data = list(assets_df.to_dict("records")) if len(assets_df) > 0 else []
-liabilities_table_data = list(liabilities_df.to_dict("records")) if len(liabilities_df) > 0 else []
+assets_table_data: list[TableRowData] = (
+    [
+        TableRowData(Category=str(row["Category"]), Item=str(row["Item"]), Value=Decimal(str(row["Value"])))
+        for row in assets_df.to_dict("records")
+    ]
+    if len(assets_df) > 0
+    else []
+)
+liabilities_table_data: list[TableRowData] = (
+    [
+        TableRowData(Category=str(row["Category"]), Item=str(row["Item"]), Value=Decimal(str(row["Value"])))
+        for row in liabilities_df.to_dict("records")
+    ]
+    if len(liabilities_df) > 0
+    else []
+)
 
 
 # ==============================================================================
@@ -221,7 +243,7 @@ def create_header() -> Component:
 # ==============================================================================
 
 
-def create_assets_table(table_data: list, total: Decimal) -> Component:
+def create_assets_table(table_data: list[TableRowData], total: Decimal) -> Component:
     """Create the assets table component."""
     return dmc.Paper(
         p="md",
@@ -254,10 +276,10 @@ def create_assets_table(table_data: list, total: Decimal) -> Component:
                         [
                             dmc.TableTr(
                                 [
-                                    dmc.TableTd(row["Category"]),
-                                    dmc.TableTd(row["Item"]),
+                                    dmc.TableTd(row.Category),
+                                    dmc.TableTd(row.Item),
                                     dmc.TableTd(
-                                        f"€{float(row['Value']):,.2f}",
+                                        f"€{float(row.Value):,.2f}",
                                         style={"textAlign": "right"},
                                     ),
                                 ]
@@ -294,7 +316,7 @@ def create_assets_table(table_data: list, total: Decimal) -> Component:
     )
 
 
-def create_liabilities_table(table_data: list, total: Decimal) -> Component:
+def create_liabilities_table(table_data: list[TableRowData], total: Decimal) -> Component:
     """Create the liabilities table component."""
     return dmc.Paper(
         p="md",
@@ -327,10 +349,10 @@ def create_liabilities_table(table_data: list, total: Decimal) -> Component:
                         [
                             dmc.TableTr(
                                 [
-                                    dmc.TableTd(row["Category"]),
-                                    dmc.TableTd(row["Item"]),
+                                    dmc.TableTd(row.Category),
+                                    dmc.TableTd(row.Item),
                                     dmc.TableTd(
-                                        f"€{float(row['Value']):,.2f}",
+                                        f"€{float(row.Value):,.2f}",
                                         style={"textAlign": "right"},
                                     ),
                                 ]
