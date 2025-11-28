@@ -877,6 +877,7 @@ dependencies = [
     { name = "requests" },
     { name = "rich" },
     { name = "ruff" },
+    { name = "schwifty" },
     { name = "types-requests" },
     { name = "uvicorn", extra = ["standard"] },
 ]
@@ -895,6 +896,7 @@ requires-dist = [
     { name = "requests", specifier = "==2.32.5" },
     { name = "rich", specifier = "==14.2.0" },
     { name = "ruff", specifier = "==0.14.6" },
+    { name = "schwifty", specifier = ">=2025.9.0" },
     { name = "types-requests", specifier = "==2.32.4.20250913" },
     { name = "uvicorn", extras = ["standard"], specifier = "==0.38.0" },
 ]
@@ -1591,6 +1593,15 @@ wheels = [
 ]
 
 [[package]]
+name = "pycountry"
+version = "24.6.1"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/76/57/c389fa68c50590881a75b7883eeb3dc15e9e73a0fdc001cdd45c13290c92/pycountry-24.6.1.tar.gz", hash = "sha256:b61b3faccea67f87d10c1f2b0fc0be714409e8fcdcc1315613174f6466c10221", size = 6043910, upload-time = "2024-06-01T04:12:15.05Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/b1/ec/1fb891d8a2660716aadb2143235481d15ed1cbfe3ad669194690b0604492/pycountry-24.6.1-py3-none-any.whl", hash = "sha256:f1a4fb391cd7214f8eefd39556d740adcc233c778a27f8942c8dca351d6ce06f", size = 6335189, upload-time = "2024-06-01T04:11:49.711Z" },
+]
+
+[[package]]
 name = "pycparser"
 version = "2.23"
 source = { registry = "https://pypi.org/simple" }
@@ -2161,6 +2172,15 @@ wheels = [
 ]
 
 [[package]]
+name = "rstr"
+version = "3.2.2"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/9f/80/d7449656d45a776b7a443ce3af4eb97c4debe416a1a80f60311c7cfd02ff/rstr-3.2.2.tar.gz", hash = "sha256:c4a564d4dfb4472d931d145c43d1cf1ad78c24592142e7755b8866179eeac012", size = 13560, upload-time = "2023-10-11T20:07:57.422Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/c8/8c/a0f14f2fcdd846839c478048032b2fc93293deaa936ff6751f27dcf50995/rstr-3.2.2-py3-none-any.whl", hash = "sha256:f39195d38da1748331eeec52f1276e71eb6295e7949beea91a5e9af2340d7b3b", size = 10030, upload-time = "2023-10-11T20:07:55.873Z" },
+]
+
+[[package]]
 name = "rtree"
 version = "1.4.1"
 source = { registry = "https://pypi.org/simple" }
@@ -2229,6 +2249,19 @@ torch = [
     { name = "numpy" },
     { name = "packaging" },
     { name = "torch" },
+]
+
+[[package]]
+name = "schwifty"
+version = "2025.9.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "pycountry" },
+    { name = "rstr" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/60/4d/eaa581ad24299bd5f3b218ce2b920b816454e83729ce6f18a8817435a3fd/schwifty-2025.9.0.tar.gz", hash = "sha256:4283b8a4c02daec81a275c9460773ea2d1b778ca70ebb5bcb12ec1fc7dc0a099", size = 753680, upload-time = "2025-09-22T12:07:27.423Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/5a/e9/661154125873dc25be9a990ffadaa6290e1f4979f057901aba54c75cacf4/schwifty-2025.9.0-py3-none-any.whl", hash = "sha256:66fa5532df9aa641d131114ea41d938e4c670f4903b49db7092a0fa9d0347978", size = 359223, upload-time = "2025-09-22T12:07:25.587Z" },
 ]
 
 [[package]]

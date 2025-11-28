@@ -1,0 +1,48 @@
+{
+  "$defs": {
+    "User": {
+      "properties": {
+        "id": {
+          "description": "The unique identifier for the user",
+          "title": "Id",
+          "type": "integer"
+        },
+        "name": {
+          "description": "The name of the user",
+          "title": "Name",
+          "type": "string"
+        },
+        "email": {
+          "description": "The email address of the user",
+          "title": "Email",
+          "type": "string"
+        },
+        "full_name": {
+          "description": "The short name of the user used as a key",
+          "title": "Full Name",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "email",
+        "full_name"
+      ],
+      "title": "User",
+      "type": "object"
+    }
+  },
+  "additionalProperties": {
+    "$ref": "#/$defs/User"
+  },
+  "propertyNames": {
+    "description": "The name of the user"
+  },
+  "type": "object",
+  "properties": {
+    "$schema": {
+      "type": "string"
+    }
+  }
+}

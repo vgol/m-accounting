@@ -1,0 +1,80 @@
+{
+  "$defs": {
+    "Account": {
+      "properties": {
+        "alias": {
+          "description": "The alias for the account",
+          "title": "Alias",
+          "type": "string"
+        },
+        "owner": {
+          "description": "Reference to the user who owns the account",
+          "title": "Owner",
+          "type": "string"
+        },
+        "shared": {
+          "title": "Shared",
+          "type": "boolean"
+        },
+        "bank": {
+          "title": "Bank",
+          "type": "string"
+        },
+        "iban": {
+          "description": "International Bank Account Number",
+          "title": "Iban",
+          "type": "string"
+        },
+        "pay_system": {
+          "$ref": "#/$defs/PaySystem"
+        },
+        "balance": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+              "type": "string"
+            }
+          ],
+          "description": "The current balance of the account",
+          "title": "Balance"
+        }
+      },
+      "required": [
+        "alias",
+        "owner",
+        "shared",
+        "bank",
+        "iban",
+        "pay_system",
+        "balance"
+      ],
+      "title": "Account",
+      "type": "object"
+    },
+    "PaySystem": {
+      "enum": [
+        "Giro",
+        "Visa",
+        "MasterCard",
+        "Cash"
+      ],
+      "title": "PaySystem",
+      "type": "string"
+    }
+  },
+  "additionalProperties": {
+    "$ref": "#/$defs/Account"
+  },
+  "propertyNames": {
+    "description": "The alias for the account"
+  },
+  "type": "object",
+  "properties": {
+    "$schema": {
+      "type": "string"
+    }
+  }
+}
